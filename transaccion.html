@@ -1,52 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+  <!-- Librerias con las que trabajaremos -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokemon Bank</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Transacciones - Pokemon Bank</title>
+  <link rel="stylesheet" href="Hist.css">
+  <link href="https://unpkg.com/nes.css@2.2.0/css/nes.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </head>
 <body>
-    <header></header>
-    <nav></nav>
-    <main>
-        <div class="container">
-            <h1>Historial de Transacciones</h1>
-            <!-- Tabla para mostrar las transacciones -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Monto</th>
-                        <th scope="col">Tipo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>18/03/2024</td>
-                        <td>Depósito</td>
-                        <td>$100.00</td>
-                        <td>Crédito</td>
-                    </tr>
-                    <tr>
-                        <td>17/03/2024</td>
-                        <td>Retiro</td>
-                        <td>$50.00</td>
-                        <td>Débito</td>
-                    </tr>
-                    <!-- Agrega más filas según sea necesario -->
-                </tbody>
-            </table>
-        </div>
-    
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    </main>
-    <footer></footer>
+  <!-- Creamos la cabecera de la pagina -->
+  <header>
+    <div class="nes-container is-dark with-title">
+        <h2 class="title">BIENVENIDO A POKEMON BANK</h2>        
+            <p>Revisa tu historial de movimientos en tu cuenta:</p>                                  
+          </div>
+  </header>
+  <!-- Creamos la navBar -->
+  <nav> 
+    <div class="logo">            
+        <img src="img/Pokémon_Bank_logo.png" alt="logo"> 
+    </div>   
+    <div class="toggle">
+        <a href="#"><ion-icon name="menu-outline"></ion-icon></a>
+    </div>
+    <ul class="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+        <!-- Agregar el botón -->
+        <li><button onclick="window.location.href = 'acciones.html';">Ir a Acciones</button></li>
+    </ul>    
+</nav>
+
+  <!-- Funcion JQuery para darle funcionalidad al menu hamburguesa -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(function(){
+    $(".toggle").on("click", function(){
+      if($(".menu").hasClass("active")){
+        $(".menu").removeClass("active");
+        $(this).find("a").html("<ion-icon name='menu-outline'></ion-icon>");
+      } else{
+        $(".menu").addClass("active");
+        $(this).find("a").html("<ion-icon name='clase-outline'></ion-icon>");
+      }
+    });
+  });
+</script>
+<!-- Ejemplo de la tabla de datos que obtendremos al consultar el historial -->
+  <main>
+    <div class="nes-container with-title is-centered">
+        <p>¡Es importante mantener un control de los registros de ingresos y gastos!</p>
+          <section class="cajero-atm">
+        <span class="nes-text is-primary">Historial de Transacciones</span> 
+      <div class="nes-table-responsive">
+        <table class="nes-table is-bordered is-centered">
+          <thead>
+            <tr>
+              <th>Fecha de transacción</th>
+              <th>Comercio</th>
+              <th>Pago o retiro</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>17/03/2024</td>
+              <td>ATM LAS AMERICAS</td>
+              <td><span class="nes-text is-success">INGRESO</span></td>
+              <td><span class="nes-text is-success">$250.00</span></td>
+            </tr>
+            <tr>
+              <td>17/03/2024</td>
+              <td>ATM CONCEPCION</td>
+              <td><span class="nes-text is-error">RETIRO</span></td>
+              <td><span class="nes-text is-error">-$250.00</span></td>
+            </tr>
+            <tr>
+                <td>17/03/2024</td>
+                <td>ATM CIUDAD DELGADO</td>
+                <td><span class="nes-text is-success">INGRESO</span></td>
+              <td><span class="nes-text is-success">$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM UNICENTRO SOYAPANGO</td>
+                <td><span class="nes-text is-error">RETIRO</span></td>
+              <td><span class="nes-text is-error">-$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM JERSEY</td>
+                <td><span class="nes-text is-success">INGRESO</span></td>
+              <td><span class="nes-text is-success">$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM POMA</td>
+                <td><span class="nes-text is-error">RETIRO</span></td>
+              <td><span class="nes-text is-error">-$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM ISLAND</td>
+                <td><span class="nes-text is-success">INGRESO</span></td>
+              <td><span class="nes-text is-success">$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM CASCADAS</td>
+                <td><span class="nes-text is-error">RETIRO</span></td>
+              <td><span class="nes-text is-error">-$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM YARA</td>
+                <td><span class="nes-text is-success">INGRESO</span></td>
+              <td><span class="nes-text is-success">$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM CURRIDABAL</td>
+                <td><span class="nes-text is-error">RETIRO</span></td>
+              <td><span class="nes-text is-error">-$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM LAS AMERICAS</td>
+                <td><span class="nes-text is-success">INGRESO</span></td>
+                <td><span class="nes-text is-success">$250.00</span></td>
+              </tr>
+              <tr>
+                <td>17/03/2024</td>
+                <td>ATM CONCEPCION</td>
+                <td><span class="nes-text is-error">RETIRO</span></td>
+                <td><span class="nes-text is-error">-$250.00</span></td>
+              </tr>
+              <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM CIUDAD DELGADO</td>
+                  <td><span class="nes-text is-success">INGRESO</span></td>
+                <td><span class="nes-text is-success">$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM UNICENTRO SOYAPANGO</td>
+                  <td><span class="nes-text is-error">RETIRO</span></td>
+                <td><span class="nes-text is-error">-$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM JERSEY</td>
+                  <td><span class="nes-text is-success">INGRESO</span></td>
+                <td><span class="nes-text is-success">$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM POMA</td>
+                  <td><span class="nes-text is-error">RETIRO</span></td>
+                <td><span class="nes-text is-error">-$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM ISLAND</td>
+                  <td><span class="nes-text is-success">INGRESO</span></td>
+                <td><span class="nes-text is-success">$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM CASCADAS</td>
+                  <td><span class="nes-text is-error">RETIRO</span></td>
+                <td><span class="nes-text is-error">-$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM YARA</td>
+                  <td><span class="nes-text is-success">INGRESO</span></td>
+                <td><span class="nes-text is-success">$250.00</span></td>
+                </tr>
+                <tr>
+                  <td>17/03/2024</td>
+                  <td>ATM CURRIDABAL</td>
+                  <td><span class="nes-text is-error">RETIRO</span></td>
+                <td><span class="nes-text is-error">-$250.00</span></td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+</div>
+  </main>
+  <!-- Copiamos la barra de navegacion -->      
+  <nav>
+    <div class="toggle">
+      <a href="#"><ion-icon name="menu-outline"></ion-icon></a>
+    </div>
+    <ul class="menu">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  <!-- Agregamos los contactos de PokemonBank -->
+  <footer>
+    <div class="nes-container is-dark with-title">
+      <h2 class="title">CONTACTOS</h2>
+          <div class="nes-container is-rounded">
+      <section class="icon-list">
+        <i class="nes-icon twitter is-large"></i>
+        <i class="nes-icon facebook is-large"></i>
+        <i class="nes-icon instagram is-large"></i>
+        <i class="nes-icon google is-large"></i>
+        <i class="nes-icon gmail is-large"></i>
+        <i class="nes-icon whatsapp is-large"></i>
+      </section>
+    </div>
+  </div>
+  </footer>
 </body>
 </html>
