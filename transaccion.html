@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Historial de Transacciones - Pokemon Bank</title>
-  <link rel="stylesheet" href="Hist.css">
+  <link rel="stylesheet" href="./css/Hist.css">
   <link href="https://unpkg.com/nes.css@2.2.0/css/nes.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
@@ -22,22 +22,18 @@
   <!-- Creamos la navBar -->
   <nav> 
     <div class="logo">            
-        <img src="img/Pokémon_Bank_logo.png" alt="logo"> 
+      <img src="img/Pokémon_Bank_logo.png" alt="logo"> 
     </div>   
     <div class="toggle">
-        <a href="#"><ion-icon name="menu-outline"></ion-icon></a>
+      <a href="#"><ion-icon name="menu-outline"></ion-icon></a>
     </div>
     <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contact</a></li>
-        <!-- Agregar el botón -->
-        <li><button onclick="window.location.href = 'acciones.html';">Ir a Acciones</button></li>
+      <li><a href="#">Pago de Servicios</a></li>
+      <li><a href="#">Depositos</a></li>
+      <li><a href="#">Retiros</a></li>
+      <li><a href="#">Inicio</a></li>
     </ul>    
-</nav>
-
+  </nav>
   <!-- Funcion JQuery para darle funcionalidad al menu hamburguesa -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
@@ -58,7 +54,24 @@
     <div class="nes-container with-title is-centered">
         <p>¡Es importante mantener un control de los registros de ingresos y gastos!</p>
           <section class="cajero-atm">
-        <span class="nes-text is-primary">Historial de Transacciones</span> 
+            <!-- Consulta de saldo disponible -->
+<section>
+  <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-dark').showModal();">
+    Consulta de Saldo
+  </button>
+  <dialog class="nes-dialog is-dark" id="dialog-dark">
+    <form method="dialog">
+      <p class="title">Tu saldo es:</p>
+      <p><span class="nes-text is-success">$25,000.00</span></p>
+      <menu class="dialog-menu">
+        <button class="nes-btn" style="color: red;">Cancel</button>
+        <button class="nes-btn is-primary">Confirm</button>
+      </menu>
+    </form>
+  </dialog>
+</section>
+<br>
+        <span class="nes-text is-primary">Historial de Transacciones</span>         
       <div class="nes-table-responsive">
         <table class="nes-table is-bordered is-centered">
           <thead>
@@ -202,11 +215,10 @@
       <a href="#"><ion-icon name="menu-outline"></ion-icon></a>
     </div>
     <ul class="menu">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#">Pago de Servicios</a></li>
+      <li><a href="#">Depositos</a></li>
+      <li><a href="#">Retiros</a></li>
+      <li><a href="#">Inicio</a></li>
     </ul>
   </nav>
   <!-- Agregamos los contactos de PokemonBank -->
