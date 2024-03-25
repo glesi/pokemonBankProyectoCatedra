@@ -1,0 +1,80 @@
+/*Configuracion de estilos generales*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*Estilos de la navBar y tamaño de imagen*/
+nav{
+    background: #222;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+}
+nav a{
+    color: #fff;    
+}
+nav a:hover{
+    color: #ef4b3f;
+}
+.logo img{
+    width: 115px;
+}
+/*Estilos del menu*/
+.menu{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    list-style: none;
+}
+.menu li{
+    padding: 15px 10px;
+    align-items: center;
+    height: 30px;
+    top: 10px;
+    font-size: 16px;  
+}
+/*Estilos del icono menu*/
+.toggle{
+    font-size: 25px;
+    display: none;
+}
+/*Responsive y estilos del icono menu cuando se llega a los pixeles configurados*/
+@media screen and (max-width: 750px){
+nav{
+    display:block;
+    position: relative;
+    padding: 15px 20px;
+}
+.menu{
+    margin-top: 15px;
+    display: none;
+}
+.menu.active, .toggle{
+    display: block;
+}
+.toggle{
+    color: red;
+    position: absolute;
+    top: 1px;
+    right: 20px;
+}
+}
+/*Resposive del historial de transacciones y comportamientos en pixeles configurados*/
+@media (max-width:735px){
+    table{
+        display: block;
+        width: 100%;
+    }
+    thead{
+        display: none;
+    }
+    tr{
+        display: flex;
+        flex-direction: column;
+    }
+    th, td{
+        width: 100%;
+    }
+}
+
