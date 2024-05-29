@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Pokémon - Historial</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/historial.css">
+</head>
+<body>
+    <div class="container">
+        <div class="caja">
+            <!-- Encabezado -->
+            <div class="header">
+                <img src="./img/Pokemon-Logo.png" alt="Logo Banco Pokémon">
+                <h1>Bienvenido, Glesi Galdamez</h1>
+                <p>Número de cuenta: 1234-5678-9101</p>
+            </div>
+
+            <!-- Menu y contenido -->
+            <div class="menu">
+                <div class="menu-aside">
+                    <!-- Menu de pestañas vertical -->
+<!-- Menu de pestañas vertical -->
+<ul class="nav nav-pills nav-fill flex-column" id="pills-tab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link" id="pills-depositos-tab" data-toggle="pill" href="#pills-depositos" role="tab" aria-controls="pills-depositos" aria-selected="false">Depósitos</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-retiros-tab" data-toggle="pill" href="#pills-retiros" role="tab" aria-controls="pills-retiros" aria-selected="false">Retiros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-pagos-tab" data-toggle="pill" href="#pills-pagos" role="tab" aria-controls="pills-pagos" aria-selected="false">Pagos</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="pills-informe-tab" data-toggle="pill" href="#pills-informe" role="tab" aria-controls="pills-informe" aria-selected="false">Informe Mensual</a>
+    </li>    
+</ul>
+
+
+                    <!-- Botones adicionales -->
+                    <div class="btn-group-custom mt-3">
+                        <a href="login.html" class="btn btn-warning">Cerrar Sesión</a>
+                        <a href="transacciones.html" class="btn btn-warning">Transacciones</a>
+                        <a href="analisis.html" class="btn btn-warning">Análisis</a>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <!-- Contenido de las pestañas -->
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade" id="pills-depositos" role="tabpanel" aria-labelledby="pills-depositos-tab">
+                            <div class="table-container">
+                                <div class="table-wrapper">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Cantidad</th>
+                                                <th>Cuenta Destino</th>
+                                                <th>Descripción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024-05-29</td>
+                                                <td>1000 Pokédólares</td>
+                                                <td>1234-5678-9101</td>
+                                                <td>Depósito inicial</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-28</td>
+                                                <td>2000 Pokédólares</td>
+                                                <td>9876-5432-1098</td>
+                                                <td>Depósito de salario</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-27</td>
+                                                <td>1500 Pokédólares</td>
+                                                <td>1111-2222-3333</td>
+                                                <td>Depósito de bonificación</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-26</td>
+                                                <td>1200 Pokédólares</td>
+                                                <td>4444-5555-6666</td>
+                                                <td>Depósito de ventas</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-25</td>
+                                                <td>800 Pokédólares</td>
+                                                <td>7777-8888-9999</td>
+                                                <td>Depósito de regalo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-05-24</td>
+                                                <td>600 Pokédólares</td>
+                                                <td>1212-3434-5656</td>
+                                                <td>Depósito de premio</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="tab-pane fade" id="pills-retiros" role="tabpanel" aria-labelledby="pills-retiros-tab">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th>Motivo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2024-05-28</td>
+                                            <td>500 Pokédólares</td>
+                                            <td>Compra de objetos</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-25</td>
+                                            <td>300 Pokédólares</td>
+                                            <td>Retiro en efectivo</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-23</td>
+                                            <td>700 Pokédólares</td>
+                                            <td>Gastos varios</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="tab-pane fade" id="pills-pagos" role="tabpanel" aria-labelledby="pills-pagos-tab">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Servicio</th>
+                                            <th>Monto</th>
+                                            <th>Número de Cuenta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2024-05-27</td>
+                                            <td>Energía Eléctrica</td>
+                                            <td>200 Pokédólares</td>
+                                            <td>12345678</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-24</td>
+                                            <td>Internet</td>
+                                            <td>350 Pokédólares</td>
+                                            <td>98765432</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-22</td>
+                                            <td>Telefonía Móvil</td>
+                                            <td>150 Pokédólares</td>
+                                            <td>45678901</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+         
+                        <div class="tab-pane fade" id="pills-informe" role="tabpanel" aria-labelledby="pills-informe-tab">
+                            <p>Seleccione un mes para generar el informe mensual.</p>
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Tipo</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2024-05-01</td>
+                                            <td>Depósito</td>
+                                            <td>1000 Pokédólares</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-05</td>
+                                            <td>Retiro</td>
+                                            <td>500 Pokédólares</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-10</td>
+                                            <td>Pago</td>
+                                            <td>200 Pokédólares</td>
+                                        </tr>
+                                        <!-- Agrega más filas según sea necesario -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        
+
+                        
+
+                        <div class="message">Seleccione una opción para iniciar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/historial.js"></script>
+</body>
+</html>

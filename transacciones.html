@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Pokémon - Transacciones</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/transacciones.css">
+</head>
+<body>
+    <div class="container">
+        <div class="caja">
+            <!-- Encabezado -->
+            <div class="header">
+                <img src="./img/Pokemon-Logo.png" alt="Logo Banco Pokémon">
+                <h1>Bienvenido, Glesi Galdamez</h1>
+                <p>Número de cuenta: 1234-5678-9101</p>
+            </div>
+
+            <!-- Menu y contenido -->
+            <div class="menu">
+                <div class="menu-aside">
+                    <!-- Menu de pestañas vertical -->
+                    <ul class="nav nav-pills nav-fill flex-column" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-depositos-tab" data-toggle="pill" href="#pills-depositos" role="tab" aria-controls="pills-depositos" aria-selected="false">Depósitos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-retiros-tab" data-toggle="pill" href="#pills-retiros" role="tab" aria-controls="pills-retiros" aria-selected="false">Retiros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-consultas-tab" data-toggle="pill" href="#pills-consultas" role="tab" aria-controls="pills-consultas" aria-selected="false">Consultas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-pagos-tab" data-toggle="pill" href="#pills-pagos" role="tab" aria-controls="pills-pagos" aria-selected="false">Pagos</a>
+                        </li>
+                    </ul>
+
+                    <!-- Botones adicionales -->
+                    <div class="btn-group-custom mt-3">
+                        <a href="login.html" class="btn btn-warning">Cerrar Sesión</a>
+                        <a href="historial.html" class="btn btn-warning">Historial</a>
+                        <a href="analisis.html" class="btn btn-warning">Análisis</a>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <!-- Contenido de las pestañas -->
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade" id="pills-depositos" role="tabpanel" aria-labelledby="pills-depositos-tab">
+                            <h4>Depósito de Pokédólares</h4>
+                            <form>
+                                <div class="form-group">
+                                    <label for="cantidadDeposito">Cantidad a Depositar</label>
+                                    <input type="number" class="form-control" id="cantidadDeposito" placeholder="Ingrese la cantidad de Pokédólares" step="0.01" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cuentaDestino">Cuenta Destino</label>
+                                    <input type="text" class="form-control" id="cuentaDestino" placeholder="Ingrese la cuenta destino a depositar" pattern="^[\d-]+$" title="Ingrese una cuenta válida, solo números y guiones">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcionDeposito">Descripción (Opcional)</label>
+                                    <textarea class="form-control" id="descripcionDeposito" rows="3" placeholder="Describa el motivo del depósito"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">Realizar Depósito</button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-retiros" role="tabpanel" aria-labelledby="pills-retiros-tab">
+                            <h4>Retiro de Pokédólares</h4>
+                            <form id="retiroForm">
+                                <div class="form-group">
+                                    <label for="montoRetiro">Seleccione el Monto a Retirar</label>
+                                    <select class="form-control" id="montoRetiro" onchange="mostrarOtroMonto()">
+                                        <option>500 Pokédólares</option>
+                                        <option>1000 Pokédólares</option>
+                                        <option>1500 Pokédólares</option>
+                                        <option>2000 Pokédólares</option>
+                                        <option>Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group otro-monto" style="display: none;">
+                                    <label for="otroMontoRetiro">Ingrese el Monto a Retirar</label>
+                                    <input type="number" class="form-control" id="otroMontoRetiro" placeholder="Cantidad personalizada de Pokédólares" step="0.01" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="motivoRetiro">Motivo de Retiro</label>
+                                    <input type="text" class="form-control" id="motivoRetiro" placeholder="Ingrese el motivo de retiro">
+                                </div>
+                                <button type="submit" class="btn btn-success">Realizar Retiro</button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-consultas" role="tabpanel" aria-labelledby="pills-consultas-tab">
+                            <h4>Consulta de Saldo</h4>
+                            <div class="text-center">
+                                <p class="lead">Tu saldo actual es:</p>
+                                <h3>10,500 Pokédólares</h3>
+                                <hr>
+                                <p>Recuerda que una buena gestión de tus Pokédólares te ayudará en tu aventura Pokémon. Considera invertir o ahorrar una parte de ellos para el futuro.</p>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-pagos" role="tabpanel" aria-labelledby="pills-pagos-tab">
+                            <h4>Pago de Servicios</h4>
+                            <form>
+                                <div class="form-group">
+                                    <label for="tipoServicio">Seleccione el Servicio a Pagar</label>
+                                    <select class="form-control" id="tipoServicio">
+                                        <option>Energía Eléctrica</option>
+                                        <option>Agua Potable</option>
+                                        <option>Internet</option>
+                                        <option>Telefonía Móvil</option>
+                                        <option>Seguro de Salud Pokémon</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="montoPago">Monto a Pagar</label>
+                                    <input type="number" class="form-control" id="montoPago" placeholder="Ingrese el monto del pago en Pokédólares" step="0.01" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroCuenta">Número de Cuenta del Servicio</label>
+                                    <input type="text" class="form-control" id="numeroCuenta" placeholder="Ingrese el número de cuenta del servicio">
+                                </div>
+                                <button type="submit" class="btn btn-success">Realizar Pago</button>
+                            </form>
+                        </div>
+
+                        <div class="message">Seleccione una opción para iniciar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/transacciones.js"></script>
+</body>
+</html>
