@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         /**Validacion para ver que los campos no esten vacios */
         if (usuario === '' || password === '') {
-            Swal.fire({
+            swal({
                 icon: 'error',
                 title: 'Error',
                 text: 'Por favor, ingrese su usuario y PIN.',
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Redirigir a panel.html
             window.location.href = 'transacciones.html';
         } else {
-            Swal.fire({
+            swal({
                 icon: 'error',
                 title: 'Error',
                 text: 'Usuario o PIN incorrecto.',
