@@ -112,3 +112,9 @@ function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
     form.reset();
 }
 });
+
+// Manejar el clic en el botón de inicio de sesión
+const loginButton = document.getElementById('loginButton');
+loginButton.addEventListener('click', function () {
+    window.location.href = 'login.html';
+});
