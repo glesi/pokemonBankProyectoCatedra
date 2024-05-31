@@ -106,8 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para mostrar el mensaje de registro exitoso
-    function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
-        swal("Registro exitoso", `Usuario: ${usuario}\nNúmero de cuenta: ${numeroCuenta}`, "success");
-        document.querySelector('.mensaje').style.display = 'block';
-    }
+function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
+    swal("Registro exitoso", `Usuario: ${usuario}\nNúmero de cuenta: ${numeroCuenta}`, "success");
+    // Limpiar los campos del formulario
+    form.reset();
+}
 });
