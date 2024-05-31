@@ -14,6 +14,8 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!--Iconos-->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Validate.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -47,20 +49,12 @@
                         <label for="confirmarContrasena">Confirmar Contraseña:</label>
                         <input type="password" class="form-control" id="confirmarContrasena" placeholder="Confirme su contraseña">
                     </div>
-<!-- Botones para ingresar y registrar -->
-<div class="btn-group">
-    <button type="button" class="btn btn-inicio" id="loginButton">Iniciar Sesión</button>
-    <button type="button" class="btn btn-registro" id="registerButton">Registrarse</button>
-</div>
-
+                    <!-- Botones para ingresar y registrar -->
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-registro" id="registerButton">Registrarse</button>
+                        <button type="button" class="btn btn-inicio" id="loginButton">Iniciar Sesión</button>
+                    </div>
                 </form>
-            </div>
-
-            <!-- Mensaje de registro exitoso -->
-            <div class="mensaje" style="display: none;">
-                <p>¡Registro exitoso!</p>
-                <p>Usuario: <span id="usuarioRegistrado"></span></p>
-                <p>Número de Cuenta: <span id="numeroCuentaRegistrado"></span></p>
             </div>
         </div>
     </div>
