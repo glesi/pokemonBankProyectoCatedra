@@ -9,12 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Obtener los valores de los campos del formulario
         const usuarioValue = document.getElementById('usuario').value.trim();
         const numeroCuentaValue = document.getElementById('numeroCuenta').value.trim();
-        const emailValue = document.getElementById('email').value.trim();
         const contrasenaValue = document.getElementById('contrasena').value.trim();
         const confirmarContrasenaValue = document.getElementById('confirmarContrasena').value.trim();
 
         // Validar que todos los campos estén llenos
-        if (usuarioValue === '' || numeroCuentaValue === '' || emailValue === '' || contrasenaValue === '' || confirmarContrasenaValue === '') {
+        if (usuarioValue === '' || numeroCuentaValue === '' || contrasenaValue === '' || confirmarContrasenaValue === '') {
             // Mostrar mensaje de error con SweetAlert
             swal("Oops...", "Por favor, completa todos los campos.", "error");
             return; // Detener el proceso si hay campos vacíos
@@ -44,10 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     message: "Debe ser un número entero mayor que 0"
                 }
             },
-            email: {
-                presence: { message: "Debe ingresar un correo electrónico" },
-                email: { message: "Debe ser una dirección de correo electrónico válida" }
-            },
             contrasena: {
                 presence: { message: "Debe ingresar una contraseña" },
                 length: {
@@ -68,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const formValues = {
             usuario: usuarioValue,
             numeroCuenta: numeroCuentaValue,
-            email: emailValue,
             contrasena: contrasenaValue,
             confirmarContrasena: confirmarContrasenaValue
         };
@@ -106,11 +100,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para mostrar el mensaje de registro exitoso
-function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
-    swal("Registro exitoso", `Usuario: ${usuario}\nNúmero de cuenta: ${numeroCuenta}`, "success");
-    // Limpiar los campos del formulario
-    form.reset();
-}
+    function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
+        swal("Registro exitoso", `Usuario: ${usuario}\nNúmero de cuenta: ${numeroCuenta}`, "success");
+        // Limpiar los campos del formulario
+        form.reset();
+    }
+
 });
 
 // Manejar el clic en el botón de inicio de sesión
