@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
             contrasena: {
                 presence: { message: "Debe ingresar una contraseña" },
                 length: {
-                    minimum: 6,
-                    message: "Debe tener al menos 6 caracteres"
+                    minimum: 4,
+                    message: "Debe tener al menos 4 caracteres"
                 }
             },
             confirmarContrasena: {
