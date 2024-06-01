@@ -1,115 +1,85 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Capturar elementos del formulario
-    const form = document.getElementById('registroForm');
+body {
+    background-image: url(../img/fondo.jpg);
+    background-size: cover;
+    background-position: center;
+}
 
-    // Agregar evento de envío del formulario
-    form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Evitar envío del formulario por defecto
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-        // Obtener los valores de los campos del formulario
-        const usuarioValue = document.getElementById('usuario').value.trim();
-        const numeroCuentaValue = document.getElementById('numeroCuenta').value.trim();
-        const contrasenaValue = document.getElementById('contrasena').value.trim();
-        const confirmarContrasenaValue = document.getElementById('confirmarContrasena').value.trim();
+.caja {
+    background-color: #f6f66d;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 600px; /* Ampliar el ancho máximo de la caja */
+}
 
-        // Validar que todos los campos estén llenos
-        if (usuarioValue === '' || numeroCuentaValue === '' || contrasenaValue === '' || confirmarContrasenaValue === '') {
-            // Mostrar mensaje de error con SweetAlert
-            swal("Oops...", "Por favor, completa todos los campos.", "error");
-            return; // Detener el proceso si hay campos vacíos
-        }
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        // Validar si el número de cuenta ya existe
-        if (numeroCuentaYaExiste(numeroCuentaValue)) {
-            // Mostrar mensaje de error con SweetAlert
-            swal("Oops...", "El número de cuenta ya está registrado.", "error");
-            return; // Detener el proceso si el número de cuenta ya existe
-        }
+.header img {
+    width: 350px;
+    margin-bottom: 20px;
+}
 
-        // Definir las reglas de validación
-        const constraints = {
-            usuario: {
-                presence: { message: "Debe ingresar un usuario" },
-                length: {
-                    minimum: 3,
-                    message: "Debe tener al menos 3 caracteres"
-                }
-            },
-            numeroCuenta: {
-                presence: { message: "Debe ingresar un número de cuenta" },
-                numericality: {
-                    onlyInteger: true,
-                    greaterThan: 0,
-                    message: "Debe ser un número entero mayor que 0"
-                }
-            },
-            contrasena: {
-                presence: { message: "Debe ingresar una contraseña" },
-                length: {
-                    minimum: 4,
-                    message: "Debe tener al menos 4 caracteres"
-                }
-            },
-            confirmarContrasena: {
-                presence: { message: "Debe confirmar la contraseña" },
-                equality: {
-                    attribute: "contrasena",
-                    message: "^Las contraseñas no coinciden"
-                }
-            }
-        };
+.formulario {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold; /* Aplicar negrita a los títulos */
+}
 
-        // Crear un objeto con los valores de los campos
-        const formValues = {
-            usuario: usuarioValue,
-            numeroCuenta: numeroCuentaValue,
-            contrasena: contrasenaValue,
-            confirmarContrasena: confirmarContrasenaValue
-        };
+.mensaje {
+    margin-top: 20px;
+    text-align: center;
+}
 
-        // Validar el formulario con los valores y las reglas de validación
-        const errors = validate(formValues, constraints);
+/* Estilos para los campos de entrada */
+.formulario input[type="text"],
+.formulario input[type="password"],
+.formulario input[type="email"] {
+    width: 80%;
+    height: 40px;
+    border: none;
+    background: white;
+    border-radius: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.407);
+    font-size: 18px;
+    padding-left: 15px;
+    text-align: center;
+    margin: 10px auto; /* Centrar vertical y horizontalmente */
+    padding-bottom: 15px;
+}
 
-        if (errors) {
-            // Mostrar mensajes de error con SweetAlert
-            let errorMessage = Object.values(errors).map(error => error.join('\n')).join('\n');
-            swal("Oops...", errorMessage, "error");
-        } else {
-            // Si no hay errores, almacenar datos en localStorage
-            guardarDatosUsuario(formValues);
-            mostrarMensajeRegistroExitoso(usuarioValue, numeroCuentaValue);
-        }
-    });
+/* Estilos para los botones */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Agregar espacio entre los botones */
+}
 
-    // Función para guardar los datos del usuario en localStorage
-    function guardarDatosUsuario(usuario) {
-        // Obtener usuarios registrados del localStorage
-        let usuariosRegistrados = JSON.parse(localStorage.getItem('usuarios')) || [];
-        // Agregar nuevo usuario al array de usuarios
-        usuariosRegistrados.push(usuario);
-        // Guardar el array actualizado en el localStorage
-        localStorage.setItem('usuarios', JSON.stringify(usuariosRegistrados));
-    }
+.btn {
+    flex: 1; /* Ajustar el tamaño de los botones para que ocupen el mismo ancho */
+    height: 45px;
+    border: none;
+    background-color: #eee7e7;
+    font-size: 17px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 500;
+    color: black;
+    margin: 0 5px; /* Agregar margen entre los botones */
+}
 
-    // Función para verificar si el número de cuenta ya existe
-    function numeroCuentaYaExiste(numeroCuenta) {
-        // Obtener usuarios registrados del localStorage
-        let usuariosRegistrados = JSON.parse(localStorage.getItem('usuarios')) || [];
-        // Verificar si el número de cuenta está presente en los usuarios registrados
-        return usuariosRegistrados.some(usuario => usuario.numeroCuenta === numeroCuenta);
-    }
-
-    // Función para mostrar el mensaje de registro exitoso
-    function mostrarMensajeRegistroExitoso(usuario, numeroCuenta) {
-        swal("Registro exitoso", `Usuario: ${usuario}\nNúmero de cuenta: ${numeroCuenta}`, "success");
-        // Limpiar los campos del formulario
-        form.reset();
-    }
-
-});
-
-// Manejar el clic en el botón de inicio de sesión
-const loginButton = document.getElementById('loginButton');
-loginButton.addEventListener('click', function () {
-    window.location.href = 'login.html';
-});
+.btn:hover {
+    background-color: #94f65c; /* Cambiar a un color similar al amarillo, pero no exactamente amarillo */
+    color: black;
+}
