@@ -2,276 +2,231 @@ document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelectorAll('.nav-link');
     const message = document.querySelector('.message');
 
+    // Función para obtener y establecer el saldo inicial
+    function establecerSaldoInicial() {
+        let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        if (!usuario.hasOwnProperty('saldo')) {
+            usuario.saldo = 500; // Establecer saldo inicial en $500.00 si no está definido
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+        }
+        if (!usuario.hasOwnProperty('nombre')) {
+            usuario.nombre = "Nombre de Usuario por Defecto"; // Cambia esto por el nombre real del usuario
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+        }
+        if (!usuario.hasOwnProperty('cuenta')) {
+            usuario.cuenta = "Número de Cuenta por Defecto"; // Cambia esto por el número real de la cuenta
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+        }
+    }
+
     // Cargar usuario y mostrar su información
     const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
     if (usuario.nombre && usuario.saldo !== undefined) {
         document.getElementById('nombreUsuario').textContent = usuario.nombre;
         document.getElementById('cuentaUsuario').textContent = usuario.cuenta;
+        document.getElementById('saldoUsuario').textContent = usuario.saldo.toFixed(2); // Mostrar saldo con dos decimales
+    } else {
+        establecerSaldoInicial(); // Establecer saldo inicial si no se encuentra en el localStorage
     }
 
-    // Asegurarse de que ninguna pestaña esté activa al cargar la página
-    document.querySelectorAll('.nav-link').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('show', 'active');
-    });
+    // Restablecer mensaje de error
+    function resetErrorMessage() {
+        message.style.display = 'none';
+    }
 
+    // Manejar clic en las pestañas
     tabs.forEach(tab => {
         tab.addEventListener('click', (event) => {
-            event.preventDefault(); // Evitar que se siga el enlace
-            message.style.display = 'none'; // Ocultar el mensaje
-
-            // Obtener el contenido asociado al enlace clicado
+            event.preventDefault();
+            resetErrorMessage();
             const targetId = tab.getAttribute('href');
             const targetContent = document.querySelector(targetId);
-
-            // Mostrar el contenido correspondiente
             targetContent.classList.add('show', 'active');
-
-            // Ocultar los demás contenidos
             const otherContents = document.querySelectorAll('.tab-pane:not(' + targetId + ')');
             otherContents.forEach(content => {
                 content.classList.remove('show', 'active');
             });
-
-            // Marcar la pestaña como activa
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
         });
     });
 
-    const montoRetiroSelect = document.getElementById('montoRetiro');
-    const otroMontoInput = document.querySelector('.otro-monto');
+    // Función para actualizar el saldo del usuario en el localStorage y mostrarlo
+    function actualizarSaldo(monto, tipo, cuentaDestino = '') {
+        let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        let usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
+    
+        const transaccion = {
+            monto: monto,
+            cuentaDestino: cuentaDestino,
+            descripcion: tipo,
+            tipo: tipo,
+            numeroCuenta: usuarioLogueado.numeroCuenta, // Incluir el número de cuenta del usuario logueado
+            fecha: new Date().toLocaleString() // Fecha y hora actual del sistema
+        };
 
-    montoRetiroSelect.addEventListener('change', () => {
-        if (montoRetiroSelect.value === 'otro') {
-            otroMontoInput.style.display = 'block';
-        } else {
-            otroMontoInput.style.display = 'none';
-        }
-    });
-
-    // Vincular el evento submit del formulario de depósitos
-    const depositoForm = document.getElementById('depositoForm');
-    depositoForm.addEventListener('submit', ingresarDeposito);
-
-    // Vincular el evento submit del formulario de retiros
-    const retiroForm = document.getElementById('retiroForm');
-    retiroForm.addEventListener('submit', ingresarRetiro);
-
-    // Vincular el evento submit del formulario de pago de servicios
-    const pagoServiciosForm = document.getElementById('pagoServiciosForm');
-    pagoServiciosForm.addEventListener('submit', realizarPagoServicio);
-
-    mostrarSaldo();
-});
-
-const constraints = {
-    depCantidadDeposito: {
-        presence: { allowEmpty: false, message: "^La cantidad a depositar es requerida" },
-        numericality: {
-            greaterThan: 0,
-            lessThanOrEqualTo: 5000,
-            message: "^La cantidad debe ser un número mayor a cero y no más de 5000 Pokédólares"
-        }
-    },
-    depCuentaDestino: {
-        presence: { allowEmpty: false, message: "^La cuenta destino es requerida" },
-        format: {
-            pattern: /^\d{10}$/,
-            message: "^Ingrese una cuenta válida, solo 10 números"
-        }
-    }
-};
-
-const retiroConstraints = {
-    montoRetiro: {
-        presence: { allowEmpty: false, message: "^Debe seleccionar un monto de retiro" },
-        numericality: {
-            greaterThan: 0,
-            lessThanOrEqualTo: 500,
-            message: "^El monto debe ser mayor a cero y no más de 500 Pokédólares"
-        }
-    },
-    motivoRetiro: {
-        presence: { allowEmpty: false, message: "^El motivo de retiro es requerido" }
-    }
-};
-
-const pagoConstraints = {
-    tipoServicio: {
-        presence: { allowEmpty: false, message: "^Debe seleccionar un tipo de servicio" }
-    },
-    psMontoPago: {
-        presence: { allowEmpty: false, message: "^Debe ingresar un monto" },
-        numericality: {
-            greaterThan: 0,
-            message: "^El monto debe ser mayor a cero"
-        }
-    },
-    psNumeroCuenta: {
-        presence: { allowEmpty: false, message: "^Debe ingresar un número de cuenta o NPE" },
-        format: {
-            pattern: /^\d+$/,
-            message: "^El número de cuenta debe contener solo números"
-        }
-    }
-};
-
-
-//Funciones para realizar deposito.
-function ingresarDeposito(event) {
-    event.preventDefault(); // Evitar el envío del formulario
-
-    // Obtener los valores del formulario
-    const depositoData = {
-        depCantidadDeposito: document.getElementById('depCantidadDeposito').value,
-        depCuentaDestino: document.getElementById('depCuentaDestino').value,
-        depDescripcionDeposito: document.getElementById('depDescripcionDeposito').value
-    };
-
-    // Validar los datos del formulario
-    const errors = validate(depositoData, constraints);
-
-    // Si hay errores, mostrar mensajes de error
-    if (errors) {
-        let errorMessages = '';
-        for (let key in errors) {
-            if (errors.hasOwnProperty(key)) {
-                errorMessages += errors[key] + '\n';
+        if (tipo === 'retiro' || tipo === 'pago') {
+            if (monto > usuario.saldo) {
+                swal("Error", "Fondos insuficientes para realizar esta operación", "error");
+                return; // No ejecutar la transacción si el monto es mayor al saldo
             }
         }
-        swal("Errores de validación", errorMessages, "error");
-    } else {
+
+        if (tipo === 'deposito' && cuentaDestino === '0987654321') {
+            usuario.saldo += parseFloat(monto);
+            swal("Éxito", `Se ha abonado ${monto.toFixed(2)} Pokédólares a tu cuenta.`, "success");
+        } else if (tipo === 'retiro' || (tipo === 'deposito' && cuentaDestino !== '0987654321') || tipo === 'pago') {
+            usuario.saldo -= parseFloat(monto);
+            let mensaje = `Se ha realizado una transacción de ${monto.toFixed(2)} Pokédólares.`;
+            if (tipo === 'deposito') {
+                mensaje = `Se ha hecho una transferencia de ${monto.toFixed(2)} Pokédólares a la cuenta ${cuentaDestino}.`;
+            } else if (tipo === 'pago') {
+                mensaje = `Se ha realizado un pago de ${monto.toFixed(2)} Pokédólares.`;
+            }
+            swal("Éxito", mensaje, "success");
+        }
+
+        // Guardar la transacción en el localStorage
+        guardarTransaccion(transaccion);
+
+        // Actualizar el saldo del usuario en el localStorage
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+
+        // Mostrar el saldo actualizado
+        document.getElementById('saldoUsuario').textContent = usuario.saldo.toFixed(2); // Actualizar saldo mostrado
+    }
+
+
+    // Manejar el evento submit del formulario de depósitos
+    const depositoForm = document.getElementById('depositoForm');
+    depositoForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        resetErrorMessage();
+
+        const montoDeposito = parseFloat(document.getElementById('depCantidadDeposito').value);
+        const cuentaDestino = document.getElementById('depCuentaDestino').value.trim();
+        const descripcion = document.getElementById('depDescripcionDeposito').value.trim();
+
+        if (isNaN(montoDeposito) || montoDeposito <= 0 || cuentaDestino === '') {
+            swal("Error", "Por favor, complete todos los campos correctamente", "error");
+            return; 
+        }
+
         const transaccion = {
-            monto: depositoData.depCantidadDeposito,
-            cuentaDestino: depositoData.depCuentaDestino,
-            descripcion: depositoData.depDescripcionDeposito || '',
+            monto: montoDeposito,
+            cuentaDestino: cuentaDestino,
+            descripcion: descripcion,
             tipo: 'deposito',
+            numeroCuenta: usuario.cuenta // Agregar el número de cuenta del usuario a la transacción
         };
-        // Si no hay errores, guardamos la transacción y mostramos el mensaje de éxito
+
         guardarTransaccion(transaccion);
         actualizarSaldo(transaccion.monto, 'deposito', transaccion.cuentaDestino);
-        //swal("Éxito", "Depósito realizado correctamente", "success");
-        // Limpiamos el formulario
-        document.querySelector('#pills-depositos form').reset();
-    }
-}
+        depositoForm.reset();
+    });
 
-//Realizar retiro
+    //
+    // Manejar el evento submit del formulario de retiros
+    const retiroForm = document.getElementById('retiroForm');
+    retiroForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        resetErrorMessage();
 
-function ingresarRetiro(event) {
-    event.preventDefault(); // Evitar el envío del formulario
-
-    // Obtener los valores del formulario
-    let montoRetiro = document.getElementById('montoRetiro').value;
-    if (montoRetiro === 'otro') {
-        montoRetiro = document.getElementById('otroMontoRetiro').value;
-    }
-    const retiroData = {
-        montoRetiro: montoRetiro,
-        motivoRetiro: document.getElementById('motivoRetiro').value
-    };
-
-    // Validar los datos del formulario
-    const errors = validate(retiroData, retiroConstraints);
-
-    // Si hay errores, mostrar mensajes de error
-    if (errors) {
-        let errorMessages = '';
-        for (let key in errors) {
-            if (errors.hasOwnProperty(key)) {
-                errorMessages += errors[key] + '\n';
-            }
+        let montoRetiro = parseFloat(document.getElementById('montoRetiro').value);
+        if (montoRetiro === 'otro') {
+            montoRetiro = parseFloat(document.getElementById('otroMontoRetiro').value);
         }
-        swal("Errores de validación", errorMessages, "error");
-    } else {
-        // Si no hay errores, guardar la transacción y mostrar mensaje de éxito
+        const motivoRetiro = document.getElementById('motivoRetiro').value.trim();
+
+        if (isNaN(montoRetiro) || montoRetiro <= 0 || motivoRetiro === '') {
+            swal("Error", "Por favor, complete todos los campos correctamente", "error");
+            return;
+        }
+
         const transaccion = {
-            monto: retiroData.montoRetiro,
-            descripcion: retiroData.motivoRetiro,
+            monto: montoRetiro,
+            descripcion: motivoRetiro,
             tipo: 'retiro',
+            numeroCuenta: usuario.cuenta // Agregar el número de cuenta del usuario a la transacción
         };
+
         guardarTransaccion(transaccion);
         actualizarSaldo(transaccion.monto, 'retiro');
-        //swal("Éxito", "Retiro realizado correctamente", "success");
-        // Limpiar el formulario
-        document.querySelector('#pills-retiros form').reset();
-        mostrarOtroMonto(); // Resetear la visualización del campo "Otro"
-    }
-}
+        retiroForm.reset();
+    });
 
-function realizarPagoServicio(event) {
-    event.preventDefault(); // Evitar el envío del formulario
+    //
+    // Manejar el evento submit del formulario de pago de servicios
+    const pagoServiciosForm = document.getElementById('pagoServiciosForm');
+    pagoServiciosForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        resetErrorMessage();
 
-    // Obtener los valores del formulario
-    const pagoData = {
-        tipoServicio: document.getElementById('tipoServicio').value,
-        psMontoPago: document.getElementById('psMontoPago').value,
-        psNumeroCuenta: document.getElementById('psNumeroCuenta').value
-    };
+        const tipoServicio = document.getElementById('tipoServicio').value.trim();
+        const montoPago = parseFloat(document.getElementById('psMontoPago').value);
+        const numeroCuenta = document.getElementById('psNumeroCuenta').value.trim();
 
-    // Validar los datos del formulario
-    const errors = validate(pagoData, pagoConstraints);
-
-    // Si hay errores, mostrar mensajes de error
-    if (errors) {
-        let errorMessages = '';
-        for (let key in errors) {
-            if (errors.hasOwnProperty(key)) {
-                errorMessages += errors[key] + '\n';
-            }
+        if (tipoServicio === '' || isNaN(montoPago) || montoPago <= 0 || numeroCuenta === '') {
+            swal("Error", "Por favor, complete todos los campos correctamente", "error");
+            return;
         }
-        swal("Errores de validación", errorMessages, "error");
-    } else {
+
         const transaccion = {
-            monto: pagoData.psMontoPago,
-            cuentaDestino: pagoData.psNumeroCuenta,
-            descripcion: pagoData.tipoServicio,
+            monto: montoPago,
+            cuentaDestino: numeroCuenta,
+            descripcion: tipoServicio,
             tipo: 'pago',
+            numeroCuenta: usuario.cuenta // Agregar el número de cuenta del usuario a la transacción
         };
-        // Si no hay errores, guardar la transacción y mostrar mensaje de éxito
+
         guardarTransaccion(transaccion);
         actualizarSaldo(transaccion.monto, 'pago');
-        //swal("Éxito", "Pago realizado correctamente", "success");
-        // Limpiar el formulario
-        document.querySelector('#pills-pagos form').reset();
+        pagoServiciosForm.reset();
+    });
+
+    // Función para guardar la transacción en el localStorage
+    function guardarTransaccion(transaccion) {
+        let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+        transaccion.fecha = new Date().toLocaleString(); // Agregar fecha y hora actual del sistema
+        transacciones.push(transaccion);
+        localStorage.setItem('transacciones', JSON.stringify(transacciones));
     }
-}
 
-function guardarTransaccion(transaccion) {
-    let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
-    transacciones.push(transaccion);
-    localStorage.setItem('transacciones', JSON.stringify(transacciones));
-}
-
-// Función para mostrar el saldo en la sección de consulta de saldo
-function mostrarSaldo() {
-    const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
-    if (usuario.saldo !== undefined) {
-        document.getElementById('saldoUsuario').textContent = usuario.saldo.toLocaleString();
+    // Función para restablecer el mensaje de error
+    function resetErrorMessage() {
+        message.style.display = 'none';
     }
-}
 
-// Función para actualizar el saldo del usuario en el local storage
-function actualizarSaldo(monto, tipo, cuentaDestino = '') {
-    let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
-
-    if (tipo === 'deposito' && cuentaDestino === '0987654321') {
-        usuario.saldo += parseFloat(monto);
-        swal("Éxito", `Se ha abonado ${monto} Pokédólares a tu cuenta.`, "success");
-    } else if (tipo === 'retiro' || (tipo === 'deposito' && cuentaDestino !== '0987654321') || tipo === 'pago') {
-        usuario.saldo -= parseFloat(monto);
-        let mensaje = `Se ha realizado una transacción de ${monto} Pokédólares.`;
-        if (tipo === 'deposito') {
-            mensaje = `Se ha hecho una transferencia de ${monto} Pokédólares a la cuenta ${cuentaDestino}.`;
-        } else if (tipo === 'pago') {
-            mensaje = `Se ha realizado un pago de ${monto} Pokédólares.`;
+    // Función para mostrar el saldo en la sección de consulta de saldo
+    function mostrarSaldo() {
+        const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        if (usuario.saldo !== undefined) {
+            document.getElementById('saldoUsuario').textContent = usuario.saldo.toFixed(2);
+            document.getElementById('nombreUsuario').textContent = usuario.nombre;
+            document.getElementById('cuentaUsuario').textContent = usuario.cuenta;
         }
-        swal("Éxito", mensaje, "success");
     }
 
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    // Ejecutar función para mostrar el saldo al cargar la página
     mostrarSaldo();
-}
+
+    // Función para mostrar los datos del usuario
+    function mostrarDatosUsuario() {
+        // Obtener el usuario logueado del localStorage
+        const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
+
+        // Mostrar los datos del usuario en la página
+        if (usuarioLogueado && usuarioLogueado.usuario && usuarioLogueado.numeroCuenta) {
+            document.getElementById('nombreUsuario').textContent = usuarioLogueado.usuario;
+            document.getElementById('cuentaUsuario').textContent = usuarioLogueado.numeroCuenta;
+        } else {
+            // Manejar el caso en que los datos del usuario no estén disponibles
+            document.getElementById('nombreUsuario').textContent = "Nombre de Usuario por Defecto";
+            document.getElementById('cuentaUsuario').textContent = "Número de Cuenta por Defecto";
+        }
+    }
+
+    // Ejecutar función para mostrar los datos del usuario al cargar la página
+    mostrarDatosUsuario();
+
+});
