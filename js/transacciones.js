@@ -4,23 +4,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para obtener y establecer el saldo inicial
     function establecerSaldoInicial() {
-        let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        let usuario = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
         if (!usuario.hasOwnProperty('saldo')) {
             usuario.saldo = 500; // Establecer saldo inicial en $500.00 si no está definido
-            localStorage.setItem('usuario', JSON.stringify(usuario));
+            localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
         }
         if (!usuario.hasOwnProperty('nombre')) {
             usuario.nombre = "Nombre de Usuario por Defecto"; // Cambia esto por el nombre real del usuario
-            localStorage.setItem('usuario', JSON.stringify(usuario));
+            localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
         }
         if (!usuario.hasOwnProperty('cuenta')) {
             usuario.cuenta = "Número de Cuenta por Defecto"; // Cambia esto por el número real de la cuenta
-            localStorage.setItem('usuario', JSON.stringify(usuario));
+            localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
         }
     }
 
     // Cargar usuario y mostrar su información
-    const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
     if (usuario.nombre && usuario.saldo !== undefined) {
         document.getElementById('nombreUsuario').textContent = usuario.nombre;
         document.getElementById('cuentaUsuario').textContent = usuario.cuenta;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para actualizar el saldo del usuario en el localStorage y mostrarlo
     function actualizarSaldo(monto, tipo, cuentaDestino = '') {
-        let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        let usuario = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
         let usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
     
         const transaccion = {
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para mostrar el saldo en la sección de consulta de saldo
     function mostrarSaldo() {
-        const usuario = JSON.parse(localStorage.getItem('usuario')) || {};
+        const usuario = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
         if (usuario.saldo !== undefined) {
             document.getElementById('saldoUsuario').textContent = usuario.saldo.toFixed(2);
             document.getElementById('nombreUsuario').textContent = usuario.nombre;
