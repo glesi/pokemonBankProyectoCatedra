@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Pokémon - Historial</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/analisis.css">
+</head>
+<body>
+    <div class="container">
+        <div class="caja">
+            <!-- Encabezado -->
+            <div class="header">
+                <img src="./img/Pokemon-Logo.png" alt="Logo Banco Pokémon">
+                <h1>Bienvenido, <span id="nombreUsuario"></span></h1>
+                <p>Número de cuenta: <span id="cuentaUsuario"></span></p>
+            </div>
+
+            <!-- Menu y contenido -->
+            <div class="menu">
+                <div class="menu-aside">
+                    <!-- Botones adicionales -->
+                    <div class="btn-group-custom mt-3">
+                        <a href="login.html" class="btn btn-warning">Cerrar Sesión</a>
+                        <a href="transacciones.html" class="btn btn-warning">Transacciones</a>
+                        <a href="historial.html" class="btn btn-warning">Historial</a>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <!-- Contenido del gráfico semanal -->
+                    <div class="tab-pane fade show active" id="pills-semanal" role="tabpanel" aria-labelledby="pills-semanal-tab">
+                        <h4>Gráfico Semanal</h4>
+                        <canvas id="grafico-semanal"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/analisis.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+body {
+    background-image: url(../img/fondo.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.caja {
+    background-color: #f6f66d;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    width: 95%; /* Ajustar el ancho de la caja según sus necesidades */
+    max-width: 1200px; /* Establecer un ancho máximo para evitar que la caja sea demasiado grande en pantallas muy grandes */
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header img {
+    width: 350px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin-top: 10px;
+}
+
+.menu {
+    display: flex;
+}
+
+.menu-aside {
+    width: 200px;
+    margin-right: 20px;
+}
+
+.menu-aside .nav {
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    max-height: 90000px;
+}
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+.btn-group-custom {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-group-custom .btn {
+    margin-bottom: 10px;
+}
+/* Estilo para cambiar el color de fondo de la tabla del gráfico */
+#grafico-semanal.chart-container {
+    background-color: white;
+}
+
+/* Estilo para cambiar el color de fondo de la tabla del gráfico */
+#grafico-semanal.chart-container table {
+    background-color: white;
+}
+
+/* Estilo para cambiar el color de fondo de las celdas de la tabla del gráfico */
+#grafico-semanal.chart-container table td {
+    background-color: white;
+}
