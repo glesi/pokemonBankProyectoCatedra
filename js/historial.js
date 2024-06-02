@@ -1,58 +1,116 @@
+
 document.addEventListener('DOMContentLoaded', function () {
-    const tabs = document.querySelectorAll('.nav-link');
-    const message = document.querySelector('.message');
+    // Función para mostrar los datos del usuario
+    function mostrarDatosUsuario() {
+        // Obtener el usuario logueado del localStorage
+        const usuarioLogueado = JSON.parse(localStorage.getItem('usuario')) || {};
 
-    // Asegurarse de que ninguna pestaña esté activa al cargar la página
-    document.querySelectorAll('.nav-link').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('show', 'active');
-    });
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (event) => {
-            event.preventDefault(); // Evitar que se siga el enlace
-            message.style.display = 'none'; // Ocultar el mensaje
-
-            // Obtener el contenido asociado al enlace clicado
-            const targetId = tab.getAttribute('href');
-            const targetContent = document.querySelector(targetId);
-
-            // Mostrar el contenido correspondiente
-            targetContent.classList.add('show', 'active');
-
-            // Ocultar los demás contenidos
-            const otherContents = document.querySelectorAll('.tab-pane:not(' + targetId + ')');
-            otherContents.forEach(content => {
-                content.classList.remove('show', 'active');
-            });
-
-            // Marcar la pestaña como activa
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-    });
-
-    const montoRetiroSelect = document.getElementById('montoRetiro');
-    const otroMontoInput = document.querySelector('.otro-monto');
-
-    montoRetiroSelect.addEventListener('change', () => {
-        if (montoRetiroSelect.value === 'Otro') {
-            otroMontoInput.style.display = 'block';
+        // Mostrar los datos del usuario en la página
+        if (usuarioLogueado && usuarioLogueado.usuario && usuarioLogueado.numeroCuenta) {
+            document.getElementById('nombreUsuario').textContent = usuarioLogueado.usuario;
+            document.getElementById('cuentaUsuario').textContent = usuarioLogueado.numeroCuenta;
         } else {
-            otroMontoInput.style.display = 'none';
+            // Manejar el caso en que los datos del usuario no estén disponibles
+            document.getElementById('nombreUsuario').textContent = "Nombre de Usuario por Defecto";
+            document.getElementById('cuentaUsuario').textContent = "Número de Cuenta por Defecto";
         }
-    });
+    }
 
+    // Función para mostrar las transacciones del usuario logueado
+    function mostrarTransaccionesUsuario() {
+        // Obtener las transacciones del localStorage
+        const transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+        // Obtener el usuario logueado del localStorage
+        const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado')) || {};
 
-    const informeBtn = document.getElementById('pills-informe-tab');
-    const modalInforme = document.getElementById('modal-informe');
+        // Filtrar las transacciones del usuario logueado
+        const transaccionesUsuario = transacciones.filter(transaccion => transaccion.numeroCuenta === usuarioLogueado.numeroCuenta);
 
-    informeBtn.addEventListener('click', function(event) {
-        event.preventDefault(); // Evitar que se siga el enlace
+        // Mostrar las transacciones en las tablas correspondientes
+        mostrarTransacciones(transaccionesUsuario.filter(transaccion => transaccion.tipo === 'deposito'), 'tabla-depositos');
+        mostrarTransacciones(transaccionesUsuario.filter(transaccion => transaccion.tipo === 'retiro'), 'tabla-retiros');
+        mostrarTransacciones(transaccionesUsuario.filter(transaccion => transaccion.tipo === 'pago'), 'tabla-pagos');
+        mostrarTransacciones(transaccionesUsuario, 'tabla-informe');
+    }
 
-        // Mostrar el modal
-        modalInforme.style.display = 'block';
-    });
+    // Función para mostrar las transacciones en una tabla
+    function mostrarTransacciones(transacciones, tablaId) {
+        // Obtener el cuerpo de la tabla
+        const tbody = document.querySelector(`#${tablaId} tbody`);
+
+        // Limpiar el contenido previo de la tabla
+        tbody.innerHTML = '';
+
+        // Recorrer todas las transacciones y agregarlas a la tabla
+        transacciones.forEach(transaccion => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${transaccion.fecha}</td>
+                <td>${transaccion.tipo}</td>
+                <td>$${transaccion.monto.toFixed(2)}</td>
+                <td>${transaccion.descripcion}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Función para guardar la transacción en el localStorage
+    function guardarTransaccion(transaccion) {
+        // Obtener la fecha actual
+        const fechaActual = new Date().toLocaleDateString();
+        
+        // Agregar la fecha a la transacción
+        transaccion.fecha = fechaActual;
+
+        let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
+        transacciones.push(transaccion);
+        localStorage.setItem('transacciones', JSON.stringify(transacciones));
+    }
+
+    // Ejecutar función para mostrar los datos del usuario al cargar la página
+    mostrarDatosUsuario();
+
+    // Ejecutar función para mostrar las transacciones del usuario al cargar la página
+    mostrarTransaccionesUsuario();
+    //-----------------------------------------------------------------------
+    var content = document.getElementById('pills-tabContent'),
+pdfout=document.getElementById('pdfout');
+    pdfout.onclick = function(){
+        var doc = new jsPDF('p','pt','letter');
+        var margin= 20;
+        var scale = (doc.internal.pageSize.width - margin *2)/document.body.clientWidth;
+        var scale_mobile=(doc.internal.pageSize.width - margin*2)/document.body.getBoundingClientRect();
+
+        //verificar navegador web o mobile
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test
+            (navigator.userAgent)){
+                //mobile
+                doc.html(content , {
+                    x:margin,
+                    y:margin,
+                    html2canvas:{
+                        scale:scale_mobile,
+                    },
+                    callback: function(doc){
+                        doc.output('dataurlnewwindow',
+                        {filename:'pdf.pdf'});
+                    }
+                });
+            }else{
+                //PC
+                doc.html(content , {
+                    x:margin,
+                    y:margin,
+                    html2canvas:{
+                        scale:scale,
+                    },
+                    callback: function(doc){
+                        doc.output('dataurlnewwindow',
+                        {filename:'pdf.pdf'});
+                    }
+                });
+            }
+    };
+
+    
 });
